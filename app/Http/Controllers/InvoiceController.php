@@ -5,12 +5,41 @@ use Barryvdh\DomPDF\PDF;
 
 use Illuminate\Http\Request;
 
+use App\Invoice;
+
 class InvoiceController extends Controller
 {
 
+    public function index(){
+
+        $user = auth()->user();
+        $invoices = $user->invoices;
+
+        return view('invoices.index',compact('invoices'));
+
+    }
+
+    public function show(Invoice $invoice){
+
+        $data = collect($invoice->meta);
+
+        $table = $this->makePdf($data);
+
+        $pdf = app()->make('dompdf.wrapper');
+        $pdf = $pdf->
+                loadHTML($table)
+                ->setWarnings(false);
+
+        return $pdf->stream($data['invoiceno'].".pdf");
+
+    }
+
     function create(){
 
-       $data = request()->validate([
+        $user = auth()->user();
+
+        // data
+        $data = request()->validate([
             'billto'=>'required',
             'invoiceno'=>'required',
             'date'=>'required',
@@ -21,7 +50,25 @@ class InvoiceController extends Controller
             'terms'=>'required',
         ]);
 
+        $invoice = $user->invoices()->create([
+            'meta'=> $data
+        ]);
+
         $data = collect($data);
+
+        $table = $this->makePdf($data);
+
+        $pdf = app()->make('dompdf.wrapper');
+        $pdf = $pdf->
+                loadHTML($table)
+                ->setWarnings(false);
+
+        return $pdf->download($data['invoiceno'].".pdf");
+
+    }
+
+    private function makePdf($data){
+
         $itemRows = "";
 
         foreach ($data['lineItems'] as $item) {
@@ -117,13 +164,8 @@ class InvoiceController extends Controller
 
         </table>";
 
+        return $table;
 
-        $pdf = app()->make('dompdf.wrapper');
-        $pdf = $pdf->
-                loadHTML($table)
-                ->setWarnings(false);
-
-        return $pdf->download($data['invoiceno'].".pdf");
     }
 
 }

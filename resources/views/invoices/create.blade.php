@@ -1,23 +1,9 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('layouts.app')
 
-        <title>Laravel</title>
-
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" type="text/javascript"></script>
-
-        <!-- CSS -->
-        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-
-    </head>
-
+@section('content')
 
     <script>
+
 
         var j = 0;
 
@@ -104,72 +90,6 @@
                 @include('components.alert', ['slot'=>$error ])
             @endforeach
         @endif
-
-
-        <table width="100%" border="0" cellpadding="0" cellspacing="0">
-            <tbody><tr>
-                <td>To:Voluptatibus facere</td>
-                <td>
-                    <table align="right" class="right">
-                        <tbody><tr>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>DueDate:10-Aug-1982</td>
-                        </tr>
-                        <tr>
-                            <td>InvoiceNo.: Alias qui at et et q</td>
-                        </tr>
-                    </tbody></table>
-                </td>
-            </tr>
-
-            <tr>
-                <td>item</td>
-                <td>Quantity</td>
-                <td>Rate</td>
-                <td>Amount</td>
-            </tr>
-
-
-                <tr>
-                    <td>Maxime accusantium s</td>
-                    <td>262</td>
-                    <td>25</td>
-                    <td>6550</td>
-                </tr>
-
-           <tr>
-               <td>
-                    <table>
-                        <tbody><tr>
-                            <td>Notes:  Quia id praesentium </td>
-                        </tr>
-                        <tr>
-                            <td>Terms  Dolor autem molestia</td>
-                        </tr>
-                    </tbody></table>
-
-               </td>
-               <td>
-                        <table>
-                            <tbody><tr>
-                                <td>Amount</td>
-                                <td>6550</td>
-                            </tr>
-                            <tr>
-                                <td>Discount</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Total Amount</td>
-                                <td>6550</td>
-                            </tr>
-                        </tbody></table>
-               </td>
-           </tr>
-
-        </tbody></table>
 
   <form action="{{ route('create.invoice') }}" method="POST">
     @csrf
@@ -313,7 +233,7 @@
                                     Total
                                 </div>
                                 <div class="w-1/3 border p-2 ">
-                                    <input type="hidden" class="totalAmount" name="totalAmount" value="10">
+                                    $<input type="hidden" class="totalAmount" name="totalAmount" value="10">
                                     <div class="totalAmount"></div>
                                 </div>
                             </div>
@@ -324,17 +244,11 @@
               </div>
 
                     <div class="w-1/4 border ml-1 p-5">
-                        <input type="submit" value="Download Invoice">
+                        <input class=" bg-blue-500 p-3 m-2 shadow-lg rounded text-white " type="submit" value="Download Invoice">
                     </div>
                 </div>
             </div>
 
         </form>
 
-
-        </body>
-
-
-
-
-</html>
+ @endsection
