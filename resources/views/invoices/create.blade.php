@@ -2,6 +2,13 @@
 
 @section('content')
 
+<script>
+	$( function() {
+		$( ".datepicker" ).datepicker();
+	} );
+	</script>
+
+
     <script>
 
 
@@ -117,7 +124,7 @@
                 <div class="w-1/4">
 
                      <label for="date"> </label>
-                     <input class="m-2 border p-2 rounded"
+                     <input class="m-2 border p-2 rounded datepicker"
                         placeholder="Date"
                         type="text"
                         name="date"
@@ -133,7 +140,7 @@
                     />
 
                     <label for="duedate" > </label>
-                    <input class="m-2 p-2 rounded border"
+                    <input class="m-2 p-2 rounded border datepicker"
                     placeholder="duedate"
                     type="text"
                     name="duedate"
