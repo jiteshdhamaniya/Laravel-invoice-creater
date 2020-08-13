@@ -36,6 +36,7 @@ Route::middleware(['web','auth'])->group(function () {
 
     Route::get('/invoices/{invoice}', 'InvoiceController@show' )->name('invoices.show');
 
+    Route::resource('customers', 'CustomerController');
 
 });
 

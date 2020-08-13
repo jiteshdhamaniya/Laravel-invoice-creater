@@ -61,6 +61,14 @@
                         @else
 
                         <li class="nav-item">
+                            <a class="nav-link" href="{{ route('customers.index') }}">{{ __('Customers') }}</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('customers.create') }}">{{ __('Add Customer') }}</a>
+                        </li>
+
+                        <li class="nav-item">
                             <a class="nav-link" href="{{ route('create.invoice') }}">{{ __('Create Invoice') }}</a>
                         </li>
 

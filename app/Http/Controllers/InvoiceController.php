@@ -5,7 +5,9 @@ use Barryvdh\DomPDF\PDF;
 
 use Illuminate\Http\Request;
 
+
 use App\Invoice;
+use App\Customer;
 
 class InvoiceController extends Controller
 {
@@ -49,6 +51,9 @@ class InvoiceController extends Controller
             'notes'=>'required',
             'terms'=>'required',
         ]);
+
+
+        $data['customer_id'] = (Customer::where('email', $data['billto'])->get()->first()->id) ?? redirect()->back();
 
         $invoice = $user->invoices()->create([
             'meta'=> $data

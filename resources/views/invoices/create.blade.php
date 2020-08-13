@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@inject('customers', 'App\Customer')
+
 @section('content')
 
 <script>
@@ -113,9 +115,29 @@
                         <div class="w-1/2">
 
                             <label for="billto"></label> <br/>
-                            <input id="billto"
+
+                            <select
+                            id="billto"
                             name="billto"
-                            type="text" placeholder="Bill to" class="p-2 border rounded"></input>
+                            class="p-2 border rounded"
+                            >
+                                @foreach ($customers::all() as $customer)
+                                     <option value="{{ $customer->email }}">{{ $customer->name }}({{ $customer->email  }})</option>
+                                @endforeach
+
+                            </select>
+                                <br/>
+                            <a
+                            class="border p-1 pr-2 pl-2 m-1 inline-block text-black
+                             no-underline
+                             rounded
+                             hover:no-underline
+                             hover:bg-blue-500
+                             hover:text-white
+                            "
+                            href="{{ route('customers.create') }}">
+                                Add Customer
+                            </a>
 
                         </div>
                 </div>
