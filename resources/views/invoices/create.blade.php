@@ -34,6 +34,11 @@
 
         $( document ).ready(function() {
 
+        jQuery("body").on('change', '#currency', function(e){
+            $("#currencyShow").text( $(this).children("option:selected").val() ) ;
+
+        })
+
            jQuery("#elementLines").on('click', '.Remove', function(e){
                e.preventDefault();
                console.log('removed');
@@ -104,9 +109,22 @@
     @csrf
     <div class="container p-10">
 
-        <div class="flex mb-4 p-5">
+        <div class="text-right">
+        <label for="currency">Select Currency</label>
+            <select name="currency" id="currency" class="border-2">
+                <option value="$">$</option>
+                <option value="&#163;">&#163;</option>
+                <option value="&euro;">&euro;</option>
+                <option value="S$">S$</option>
+                <option value="&#8377;">&#8377</option>
+            </select>
 
-            <div class="border p-2 w-3/4 border">
+            <input class=" bg-blue-500 p-3 m-2 shadow-md rounded text-white " type="submit" value="Download Invoice">
+        </div>
+
+        <div class="flex mb-4">
+
+            <div class="border-2 p-2 w-full border-2">
 
                 <div class="flex mb-4">
                 <div class="w-3/4">
@@ -114,21 +132,21 @@
                 <div class="flex">
                         <div class="w-1/2">
 
+
+
                             <label for="billto"></label> <br/>
 
                             <select
                             id="billto"
                             name="billto"
-                            class="p-2 border rounded"
+                            class="p-2 border-2 rounded"
                             >
                                 @foreach ($customers::all() as $customer)
                                      <option value="{{ $customer->email }}">{{ $customer->name }}({{ $customer->email  }})</option>
                                 @endforeach
 
-                            </select>
-                                <br/>
-                            <a
-                            class="border p-1 pr-2 pl-2 m-1 inline-block text-black
+                            </select>  <a
+                            class="border-2 p-1 pr-2 pl-2 m-1 inline-block text-black
                              no-underline
                              rounded
                              hover:no-underline
@@ -138,7 +156,6 @@
                             href="{{ route('customers.create') }}">
                                 Add Customer
                             </a>
-
                         </div>
                 </div>
 
@@ -146,7 +163,7 @@
                 <div class="w-1/4">
 
                      <label for="date"> </label>
-                     <input class="m-2 border p-2 rounded datepicker"
+                     <input class="m-2 border-2 p-2 rounded datepicker"
                         placeholder="Date"
                         type="text"
                         name="date"
@@ -154,15 +171,15 @@
                         />
 
                     <label for="invoiceno" > </label>
-                    <input class="m-2 border p-2 rounded"
+                    <input class="m-2 border-2 p-2 rounded"
                     placeholder="invoiceno"
-                    type="text"
+                    type="number"
                     name="invoiceno"
                     id="invoiceno"
                     />
 
                     <label for="duedate" > </label>
-                    <input class="m-2 p-2 rounded border datepicker"
+                    <input class="m-2 p-2 rounded border-2 datepicker"
                     placeholder="duedate"
                     type="text"
                     name="duedate"
@@ -177,15 +194,15 @@
                     <div class="block" id="elementLines">
 
                     <div class="flex mb-4">
-                        <div class="w-1/4 border">Item</div>
-                        <div class="w-1/2 border">Quantity</div>
-                        <div class="w-1/2 border">Rate</div>
-                        <div class="w-1/2 border">Amount</div>
+                        <div class="w-1/4 border-2 p-2">Item</div>
+                        <div class="w-1/2 border-2 p-2">Quantity</div>
+                        <div class="w-1/2 border-2 p-2">Rate</div>
+                        <div class="w-1/2 border-2 p-2">Amount</div>
                     </div>
 
                     <div id="firstLine">
                             <div class="flex mb-4"
-                            ><div class="w-3/4 border">
+                            ><div class="w-3/4 border-2">
                                     <input
                                     class="p-1  w-full"
                                     type="text"
@@ -195,7 +212,7 @@
                                      />
                                 </div>
 
-                                <div class="w-1/4 border">
+                                <div class="w-1/4 border-2">
                                     <input
                                         class="p-1 quantity"
                                         name="lineItems[0][quantity]"
@@ -206,7 +223,7 @@
                                         onChange={this.handleRowItems}
                                         />
                                     </div>
-                                <div class="w-1/4 border">
+                                <div class="w-1/4 border-2">
                                     <input
                                     class="p-1 rate"
                                     name="lineItems[0][rate]"
@@ -216,7 +233,7 @@
                                     placeholder="rate"
                                     onChange={this.handleRowItems}
                                     /></div>
-                                <div class="w-1/4 border">
+                                <div class="w-1/4 border-2">
                                     <input
                                     class="p-1 amount"
                                     name="lineItems[0][amount]"
@@ -226,7 +243,7 @@
                                     placeholder="amount"
                                  /></div>
 
-                                 <div class="w-1/4 border">
+                                 <div class="w-1/4 border-2">
                                     <a class="Remove">Remove</a>
                                  </div>
                             </div>
@@ -246,23 +263,29 @@
                 <div class="flex mb-4">
                         <div class="w-3/4 mr-2">
 
-                            <textarea name="notes"
+                            <textarea
+                            name="notes"
                             onChange={this.handleInputChange}
-                            placeholder="Notes - any relevant information not already covered" class="border w-3/4"></textarea>
+                            placeholder="Notes - any relevant information not already covered"
+                            class="border-2 w-3/4 p-2 rounded"
+                            ></textarea>
 
-                            <textarea name="terms"
+                            <textarea
+                            name="terms"
                             onChange={this.handleInputChange}
-                            placeholder="Terms and conditions - late fees, payment methods, delivery schedule" class="border w-3/4"></textarea>
+                            placeholder="Terms and conditions - late fees, payment methods, delivery schedule"
+                            class="border-2 w-3/4 p-2 rounded"></textarea>
 
                             </div>
 
                         <div class="w-1/4">
                             <div class="flex">
-                                <div class="w-2/3 border p-2 ">
+                                <div class="w-2/3 border-2 p-2 ">
                                     Total
                                 </div>
-                                <div class="w-1/3 border p-2 ">
-                                    $<input type="hidden" class="totalAmount" name="totalAmount" value="10">
+                                <div class="w-1/3 border-2 p-2 ">
+                                    <span id="currencyShow">$</span>
+                                    <input type="hidden" class="totalAmount" name="totalAmount" value="10">
                                     <div class="totalAmount"></div>
                                 </div>
                             </div>
@@ -271,11 +294,7 @@
                     </div>
 
               </div>
-
-                    <div class="w-1/4 border ml-1 p-5">
-                        <input class=" bg-blue-500 p-3 m-2 shadow-lg rounded text-white " type="submit" value="Download Invoice">
-                    </div>
-                </div>
+                  </div>
             </div>
 
         </form>

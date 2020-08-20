@@ -40,3 +40,5 @@ Route::middleware(['web','auth'])->group(function () {
 
 });
 
+
+Route::view('template','invoices.template');
