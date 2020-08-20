@@ -50,8 +50,8 @@ class InvoiceController extends Controller
             'totalAmount'=>'required',
             'notes'=>'required',
             'terms'=>'required',
+            'currency'=>'required'
         ]);
-
 
         $data['customer_id'] = (Customer::where('email', $data['billto'])->get()->first()->id) ?? redirect()->back();
 
@@ -71,6 +71,10 @@ class InvoiceController extends Controller
         return $pdf->download($data['invoiceno'].".pdf");
 
     }
+
+    /**
+     * Make PDF
+     */
 
     private function makePdf($data){
 
@@ -95,79 +99,133 @@ class InvoiceController extends Controller
 
         $table = "
             <style>
-                * {
-                    font-family:'Arial, Helvetica, sans-serif';
-                }
+            * {
+                font-family: Arial, Helvetica, sans-serif;
+            }
 
-                table,tr{
-                    width:100%;
-                    padding:50px 0px;
-                }
+            .text-right{
+                text-align: right;
+            }
 
-                td{
-                }
+            .w-50{
+                width: 50%;
+            }
 
-                .grey{
-                    background:grey;
-                }
+            td{
+                padding:5px;
+                margin:0px;
+            }
+
+            .grey{
+                background-color: #ddd;
+            }
+
+            .border{
+                border: 1px solid #000;
+            }
+
+            .itemTable{
+                margin-top:20px;
+            }
+
+            .pt-100{
+                padding-top: 100px;;
+            }
 
             </style>
 
-        <table width='100%' border='0'  cellspacing='0' cellpadding='5'>
-            <tr>
-                <td colspan='2'>To:". $data['billto'] ."</td>
-                <td colspan='2'>
-                    <table>
-                        <tr>
-                            <td>Due Date:". $data['duedate']. "</td>
-                        </tr>
-                        <tr>
-                            <td>Invoice No.: ". $data['invoiceno']. "</td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
+        <table width='100%' cellspacing='0' cellpadding='0'>
+        <tr>
+            <td class='w-50'>
+                <img src='https://media-exp1.licdn.com/dms/image/C4D0BAQEG1o0rnIFR0Q/company-logo_200_200/0?e=2159024400&v=beta&t=qCoHhxFxGz9RZilRTF3oDMXs6TZLvmfDHUqu86ihoRs'
+                        border='0'
+                        height='150'
+                        width='150'
+                        />
+            </td>
+            <td class='w-50 text-right'>
+                <h1>INVOICE</h1>
+                #". $data['invoiceno']. "
 
-            <tr class='grey'>
-                <td>item</td>
-                <td>Quantity</td>
-                <td>Rate</td>
-                <td>Amount</td>
-            </tr>
+            </td>
+        </tr>
 
-            ". $itemRows . "
+        <tr>
+            <td>
+                <strong> Bill To: ". $data['billto'] ." </strong>
+            </td>
 
-           <tr>
-               <td colspan='2'>
-                    <table>
-                        <tr>
-                            <td>Notes:  ". $data['notes'] . " </td>
-                        </tr>
-                        <tr>
-                            <td>Terms  ". $data['terms'] . "</td>
-                        </tr>
-                    </table>
+            <td>
+                <table align='right' width='70%' class='text-right' cellspacing='0' cellpadding='0'>
+                    <tr>
+                        <td>Date</td>
+                        <td> ". $data['date']. "</td>
+                    </tr>
+                    <tr>
+                        <td>Due Date</td>
+                        <td> ". $data['duedate']. "</td>
+                    </tr>
+                    <tr class='grey'>
+                        <td>Balance Due</td>
+                        <td> ".$data['totalAmount']."</td>
+                    </tr>
+                </table>
 
-               </td>
-               <td colspan='2'>
-                        <table>
-                            <tr>
-                                <td>Amount</td>
-                                <td>".$data['totalAmount']."</td>
-                            </tr>
-                            <tr>
-                                <td>Discount</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Total Amount</td>
-                                <td>".$data['totalAmount']."</td>
-                            </tr>
-                        </table>
-               </td>
-           </tr>
+            </td>
 
-        </table>";
+        </tr>
+
+        <tr>
+            <td colspan='2'>
+
+            <br/><br/><br/><br/><br/>
+
+                <table class='itemTable' width='100%' cellspacing='1'>
+                    <tr class='grey'>
+                        <td>Name</td>
+                        <td>Qty.</td>
+                        <td>Rate</td>
+                        <td>Amount</td>
+                    </tr>
+                     ". $itemRows . "
+                </table>
+            </td>
+        </tr>
+
+        <tr>
+            <td class='pt-100'>
+            <h3>
+            Notes: </h3>
+
+           <p>
+                ". $data['notes'] . "
+           </p>
+
+           <h3>
+           Terms: </h3>
+
+          <p>
+               ". $data['terms'] . "
+          </p>
+
+            </td>
+
+            <td style='vertical-align: bottom;' class='pt-100'>
+
+                <table class='text-right' align='right' width='70%' cellspacing='0' cellpadding='0'>
+                    <tr class='grey'>
+                        <td>Total</td>
+                        <td>".$data['currency'].$data['totalAmount']."</td>
+                    </tr>
+                </table>
+
+            </td>
+
+        </tr>
+
+
+    </table>";
+
 
         return $table;
 
